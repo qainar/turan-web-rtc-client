@@ -1,19 +1,15 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import './App.css';
-import SocketIo from "socket.io-client";
-const SERVER_URL = 'http://localhost:4020'
-function App() {
-    useEffect(() => {
-        SocketIo(SERVER_URL)
-    }, [])
+import {Main} from "./pages/Main";
+import {Route, Routes} from "react-router-dom";
+import {Room} from "./pages/Room";
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          dsds
-        </p>
-      </header>
-    </div>
+    <Routes>
+      <Route path='/' element={<Main/>}/>
+      <Route path='/room/:id' element={<Room/>} />
+    </Routes>
   );
 }
 
