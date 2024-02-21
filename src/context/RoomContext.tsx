@@ -22,13 +22,25 @@ export const RoomProvider: React.FC<{children: ReactNode}> = ({children}) => {
     useEffect(() => {
         const peer_id = uuidV4()
         const peerInstance = new Peer(peer_id)
-
+        
         setPeer(peerInstance)
+
+        try{
+            navigator.mediaDevices.getUserMedia({
+                video: true,
+                audio: true
+            }).then((stream) => {
+                setStream(stream)
+            })
+        }catch(error){
+            console.error(error);
+            
+        }
         ws.on('room-created', enterRoom)
         ws.on('get-users', getUsers)
     }, [])
     return (
-        <RoomContext.Provider value={{ ws, peer }}>
+        <RoomContext.Provider value={{ ws, peer, stream }}>
             {children}
         </RoomContext.Provider>
     );
