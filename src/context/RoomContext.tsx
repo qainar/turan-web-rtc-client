@@ -12,8 +12,12 @@ const ws = SocketIoClient(SERVER_URL)
 export const RoomProvider: React.FC<{children: ReactNode}> = ({children}) => {
     const navigate = useNavigate()
     const [peer, setPeer] = useState<Peer>()
+    const [stream, setStream] = useState<MediaStream>()
     const enterRoom = async ({room_id}: {room_id: string}) => {
         navigate(`/room/${room_id}`)
+    }
+    const getUsers = ({participants}: {participants: string[]}) => {
+        console.log(participants)
     }
     useEffect(() => {
         const peer_id = uuidV4()
@@ -21,6 +25,7 @@ export const RoomProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
         setPeer(peerInstance)
         ws.on('room-created', enterRoom)
+        ws.on('get-users', getUsers)
     }, [])
     return (
         <RoomContext.Provider value={{ ws, peer }}>
