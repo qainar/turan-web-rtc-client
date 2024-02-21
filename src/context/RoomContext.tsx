@@ -39,6 +39,15 @@ export const RoomProvider: React.FC<{children: ReactNode}> = ({children}) => {
         ws.on('room-created', enterRoom)
         ws.on('get-users', getUsers)
     }, [])
+
+    useEffect(() => {
+        if(!peer) return
+        if(!stream) return
+
+        ws.on("user-joined", ({peer_id}) => {
+            const call = peer.call(peer_id, stream)
+        })
+    }, [peer, stream])
     return (
         <RoomContext.Provider value={{ ws, peer, stream }}>
             {children}
